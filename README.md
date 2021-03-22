@@ -7,11 +7,11 @@
 Перед началом работы с проектом необходимо:
 
     Клонировать текущий репозиторий проекта
-    - git clone git@github.com:alpha-coders-team/todo-app.git
+    - git clone git@github.com:igor-markin/api_yamdb.git
 
     Создать новую ветку
     - cd todo-app 
-    - git checkout -b add-user-to-contributors
+    - git checkout -b <название-ветки>
 
 
 После внесения изменений в проект необходимо:
@@ -19,7 +19,7 @@
     Отправить изменения на удаленный сервер
     - git add 'modified file'
     - git commit -m "message"
-    - git push origin add-user-to-contributors
+    - git push origin <название-ветки>
 
     На сайте github открыть Pull Request
     - выбрать Compare & pull request
