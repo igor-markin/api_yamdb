@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+
+class AuthViewSet(viewsets.ModelViewSet):
+    pass
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    pass
