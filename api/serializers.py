@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, User
+from .models import Category, Genre, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,3 +20,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         exclude = ['id', ]
         model = Category
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        exclude = ['id', ]
+        model = Genre

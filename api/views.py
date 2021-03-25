@@ -1,15 +1,15 @@
 from django.utils.crypto import get_random_string
-from rest_framework import (decorators, filters, permissions, status, views,
-                            viewsets, mixins)
+from rest_framework import (decorators, filters, mixins, permissions, status,
+                            views, viewsets)
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
-from .models import Category, User
+from .models import Category, Genre, User
 from .permissions import IsAdminOrAccessDenied, IsAdminOrReadOnly
 from .serializers import (AdminUserSerializer, CategorySerializer,
-                          UserSerializer)
+                          GenreSerializer, UserSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -44,6 +44,16 @@ class DeleteViewSet(mixins.DestroyModelMixin,
 class CategoryViewSet(DeleteViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
+    lookup_field = 'slug'
+    pagination_class = PageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=name',)
+
+
+class GenreViewSet(DeleteViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
     permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
     pagination_class = PageNumberPagination

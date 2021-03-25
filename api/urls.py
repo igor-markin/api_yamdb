@@ -3,12 +3,15 @@ from rest_framework import routers
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
 
-from .views import CategoryViewSet, UserViewSet
+from .views import CategoryViewSet, GenreViewSet, UserViewSet
 
 router_v1 = routers.DefaultRouter()
 router_v1.register('users', UserViewSet)
 router_v1.register(
     'categories', CategoryViewSet, basename='categories_api'
+)
+router_v1.register(
+    'genres', GenreViewSet, basename='genres_api'
 )
 
 urlpatterns = [
