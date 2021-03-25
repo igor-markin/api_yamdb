@@ -1,5 +1,10 @@
 from django.contrib import admin
+<<<<<<< HEAD
 from .models import User, Review, Comment
+=======
+
+from .models import User
+>>>>>>> master
 
 admin.site.register(User)
 
