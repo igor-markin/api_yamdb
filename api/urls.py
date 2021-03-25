@@ -3,7 +3,7 @@ from rest_framework import routers
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
 
-from .views import CategoryViewSet, GenreViewSet, UserViewSet
+from .views import CategoryViewSet, GenreViewSet, TitleViewSet, UserViewSet
 
 router_v1 = routers.DefaultRouter()
 router_v1.register('users', UserViewSet)
@@ -13,6 +13,10 @@ router_v1.register(
 router_v1.register(
     'genres', GenreViewSet, basename='genres_api'
 )
+router_v1.register(
+    'titles', TitleViewSet, basename='titles_api'
+)
+
 
 urlpatterns = [
     path('v1/', include('drfpasswordless.urls')),
