@@ -6,14 +6,16 @@ from .models import Category, Genre, Title, User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'bio', 'email', 'role')
+        fields = ('first_name', 'last_name',
+                  'username', 'bio', 'email', 'role')
         read_only_fields = ('role', 'email')
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'bio', 'email', 'role')
+        fields = ('first_name', 'last_name',
+                  'username', 'bio', 'email', 'role')
 
 
 class CategorySerializer(serializers.ModelSerializer):
