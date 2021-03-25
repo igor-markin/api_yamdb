@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 class Roles(models.TextChoices):
@@ -9,9 +9,10 @@ class Roles(models.TextChoices):
 
 
 class User(AbstractUser):
-    bio = models.CharField('О себе', blank=True, null=True,)
+    bio = models.TextField('О себе', blank=True, null=True, )
     email = models.EmailField('Email', unique=True)
-    role = models.CharField('Роль', choices=Roles.choices, default=Roles.USER)
+    role = models.CharField('Роль', max_length=10, choices=Roles.choices,
+                            default=Roles.USER)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('username',)

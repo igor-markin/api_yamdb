@@ -28,6 +28,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
+    'drfpasswordless',
 ]
 
 MIDDLEWARE = [
@@ -114,6 +118,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
 
+# Email
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
 # JWT
 
 SIMPLE_JWT = {
@@ -125,7 +134,30 @@ SIMPLE_JWT = {
 # RestFramework
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
 }
+
+
+# DRF Password Less
+
+PASSWORDLESS_AUTH = {
+    'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
+    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': 'noreply@example.com',
+    'PASSWORDLESS_AUTH_TOKEN_CREATOR': 'api.jwt_token_generation.get_tokens_for_user',
+    'PASSWORDLESS_AUTH_TOKEN_SERIALIZER': 'api.jwt_token_serializer.JWTTokenResponseSerializer',
+}
+
+
+# Custom User
+
+AUTH_USER_MODEL = 'api.User'
