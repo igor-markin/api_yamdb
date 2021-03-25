@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -19,3 +20,52 @@ class User(AbstractUser):
 
     class Meta:
         ordering = ('username',)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        ordering = ('slug',)
+
+
+class Genre(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        ordering = ('slug',)
+
+
+class Title(models.Model):
+    name = models.CharField(max_length=200)
+    year = models.SmallIntegerField()
+    rating = models.SmallIntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10),
+        ],
+        blank=True,
+        null=True,
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        related_name='titles',
+        blank=True,
+        null=True,
+        db_index=False,
+    )
+    genre = models.ManyToManyField(
+        Genre,
+        related_name='titles',
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ('id',)
