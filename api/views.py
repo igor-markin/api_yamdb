@@ -46,16 +46,16 @@ class UserViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = (IsAuthorOrModeratorOrReadOnly,)
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['title', ]
+    permission_classes = [IsAuthorOrModeratorOrReadOnly]
+    lookup_field = 'title'
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = (IsAuthorOrModeratorOrReadOnly,)
-    filter_backends = [DjangoFilterBackend]
+    permission_classes = [IsAuthorOrModeratorOrReadOnly]
+    pagination_class = PageNumberPagination
+    lookup_field = 'review'
 
 
     def list(self, request, reviws_id=None):
@@ -71,7 +71,7 @@ class DeleteViewSet(mixins.DestroyModelMixin,
     pass
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(DeleteViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
@@ -81,7 +81,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     search_fields = ('=name',)
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GenreViewSet(DeleteViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = [IsAdminOrReadOnly]
