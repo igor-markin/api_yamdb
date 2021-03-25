@@ -19,3 +19,11 @@ class User(AbstractUser):
 
     class Meta:
         ordering = ('username',)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        ordering = ('slug',)

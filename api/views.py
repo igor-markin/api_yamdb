@@ -1,14 +1,15 @@
 from django.utils.crypto import get_random_string
-from rest_framework import decorators, status
-from rest_framework import viewsets, views, filters, permissions
+from rest_framework import (decorators, filters, permissions, status, views,
+                            viewsets, mixins)
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
-from .models import User
-from .permissions import (IsAdminOrAccessDenied, IsAdminOrReadOnly)
-from .serializers import AdminUserSerializer, UserSerializer
+from .models import Category, User
+from .permissions import IsAdminOrAccessDenied, IsAdminOrReadOnly
+from .serializers import (AdminUserSerializer, CategorySerializer,
+                          UserSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -31,3 +32,20 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteViewSet(mixins.DestroyModelMixin,
+                    mixins.ListModelMixin,
+                    mixins.CreateModelMixin,
+                    viewsets.GenericViewSet):
+    pass
+
+
+class CategoryViewSet(DeleteViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
+    lookup_field = 'slug'
+    pagination_class = PageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=name',)
