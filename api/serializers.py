@@ -1,10 +1,6 @@
 from rest_framework import serializers
-<<<<<<< HEAD
-from .models import User, Review, Comment
-=======
-
-from .models import Category, Genre, Title, User
->>>>>>> master
+from .models import (User, Review, Comment,
+                     Category, Genre, Title)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -18,7 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
 class AdminUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-<<<<<<< HEAD
         fields = ('first_name', 'last_name', 'username', 'bio', 'email', 'role')
 
 
@@ -38,7 +33,6 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('__all__')
         model = Comment
-=======
         fields = ('first_name', 'last_name',
                   'username', 'bio', 'email', 'role')
 
@@ -91,4 +85,3 @@ class TitleSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Title
->>>>>>> master

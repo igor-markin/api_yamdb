@@ -1,22 +1,21 @@
 
 from django.utils.crypto import get_random_string
-from rest_framework import decorators, status
-from rest_framework import viewsets, views, filters, permissions
+from rest_framework import (viewsets, views, filters, permissions,
+                            mixins, status, decorators)
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
-from .models import User, Review, Comment
+from .models import (User, Review, Comment,
+                     Category, Genre, Title)
 from .permissions import (IsAdminOrAccessDenied, IsAdminOrReadOnly,
                           IsAuthorOrModeratorOrReadOnly)
 from .serializers import (AdminUserSerializer, UserSerializer,
                           ReviewSerializer, CommentSerializer)
 from .filters import TitleFilter
-from .models import Category, Genre, Title, User
 from .permissions import IsAdminOrAccessDenied, IsAdminOrReadOnly
 from .serializers import (AdminUserSerializer, CategorySerializer,
                           GenreSerializer, TitleSerializer, UserSerializer)
@@ -72,7 +71,7 @@ class DeleteViewSet(mixins.DestroyModelMixin,
     pass
 
 
-class CategoryViewSet(DeleteViewSet):
+class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
@@ -82,7 +81,7 @@ class CategoryViewSet(DeleteViewSet):
     search_fields = ('=name',)
 
 
-class GenreViewSet(DeleteViewSet):
+class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = [IsAdminOrReadOnly]
