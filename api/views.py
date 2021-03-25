@@ -7,7 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from .models import User
-from .permissions import (IsAdminOrAccessDenied)
+from .permissions import (IsAdminOrAccessDenied, IsAdminOrReadOnly)
 from .serializers import AdminUserSerializer, UserSerializer
 
 
