@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Avg
 
 
 class Roles(models.TextChoices):
@@ -72,6 +73,8 @@ class Title(models.Model):
 
 
 class Review(models.Model):
+    SCORE_CHOICES = zip(range(1, 11), range(1, 11))
+    score = models.IntegerField(choices=SCORE_CHOICES, default=1)
     text = models.TextField(
         blank=True,
         null=True,
@@ -80,12 +83,13 @@ class Review(models.Model):
     pub_date = models.DateTimeField(
         'Дата отзыва',
         auto_now_add=True,
-        help_text='Дата отзыва'
+        help_text='Дата отзыва',
+        db_index=True
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='titles',
+        related_name='reviews',
         verbose_name='Автор'
     )
     title = models.ForeignKey(
@@ -99,19 +103,18 @@ class Review(models.Model):
         ordering = ('-pub_date',)
 
     def __str__(self):
-        str_return = str(self.text)[:15]
+        str_return = str(self.text)
         return str_return
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.score_avg = Review.objects.filter(title_id=self.title).aggregate(
+            Avg('score')
+        )
+        self.title.rating = self.score_avg['score__avg']
+        self.title.save()
 
 class Comment(models.Model):
-    review = models.ForeignKey(
-        Review,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-        related_name='comments',
-        verbose_name='комментарий'
-    )
 
     text = models.TextField(
         blank=True,
@@ -129,7 +132,18 @@ class Comment(models.Model):
         'Дата',
         auto_now_add=True
     )
-    
-    def __str__(self):
-        str_return = str(self.text)[:15]
-        return str_return
+    title = models.ForeignKey(
+        Title,
+        on_delete=models.CASCADE,
+        related_name='titles',
+        verbose_name='Произведение'
+    )
+
+    review = models.ForeignKey(
+        Review,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='comments',
+        verbose_name='комментарий'
+    )
