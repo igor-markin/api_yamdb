@@ -36,6 +36,7 @@ class IsAuthorOrModeratorOrReadOnly(permissions.BasePermission):
                 and request.user.role == Roles.MODERATOR
                 or obj.author == request.user)
 
+
 class ReviewCommentPermissions(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):

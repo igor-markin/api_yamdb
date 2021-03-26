@@ -113,6 +113,7 @@ class Review(models.Model):
         self.title.rating = self.score_avg['score__avg']
         self.title.save()
 
+
 class Comment(models.Model):
 
     text = models.TextField(

@@ -1,9 +1,5 @@
 from django.urls import include, path
-from django.views.generic import TemplateView
 from rest_framework import routers
-from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import (TokenObtainPairView,
-                                            TokenRefreshView)
 
 from .views import (CategoryViewSet, CommentViewSet, GenreViewSet,
                     ReviewViewSet, TitleViewSet, UserViewSet,
