@@ -1,4 +1,4 @@
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, permissions, status, viewsets
@@ -31,7 +31,7 @@ def get_confirmation_code(request):
     serializer.is_valid(raise_exception=True)
     email = serializer.data['email']
     user = User.objects.get_or_create(email=email)[0]
-    confirmation_code = PasswordResetTokenGenerator().make_token(user)
+    confirmation_code = default_token_generator.make_token(user)
 
     send_mail(
         'Код подтверждения',
@@ -51,7 +51,7 @@ def get_token(request):
     email = serializer.data['email']
     user = User.objects.get(email=email)
     confirmation_code = serializer.data['confirmation_code']
-    if not PasswordResetTokenGenerator().check_token(user, confirmation_code):
+    if not default_token_generator.check_token(user, confirmation_code):
         return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
     token = RefreshToken.for_user(user).access_token
 
