@@ -90,9 +90,7 @@ class Review(models.Model):
     )
     title = models.ForeignKey(
         Title,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
+        on_delete=models.CASCADE,
         related_name='titles',
         verbose_name='Произведение'
     )
@@ -127,7 +125,11 @@ class Comment(models.Model):
         related_name='comments',
         verbose_name='Автор'
     )
-    created = models.DateTimeField(
-        'Дата публикации',
+    pub_date = models.DateTimeField(
+        'Дата',
         auto_now_add=True
     )
+    
+    def __str__(self):
+        str_return = str(self.text)[:15]
+        return str_return

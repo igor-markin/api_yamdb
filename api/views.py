@@ -43,27 +43,6 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    permission_classes = [IsAuthorOrModeratorOrReadOnly]
-    lookup_field = 'title'
-
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [IsAuthorOrModeratorOrReadOnly]
-    pagination_class = PageNumberPagination
-    lookup_field = 'review'
-
-
-    def list(self, request, reviws_id=None):
-        serializer = self.serializer_class(
-            self.queryset.filter(review_id=post_id),
-            many=True
-        )
-        return Response(serializer.data, status=status.HTTP_200_OK)
 class DeleteViewSet(mixins.DestroyModelMixin,
                     mixins.ListModelMixin,
                     mixins.CreateModelMixin,
@@ -99,3 +78,23 @@ class TitleViewSet(
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_class = TitleFilter
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthorOrModeratorOrReadOnly]
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthorOrModeratorOrReadOnly]
+
+    
+    def list(self, request, review=None):
+        serializer = self.serializer_class(
+            self.queryset.filter(review=review),
+            many=True
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)    
+

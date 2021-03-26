@@ -17,26 +17,6 @@ class AdminUserSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name', 'username', 'bio', 'email', 'role')
 
 
-class ReviewSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    text = serializers.CharField()
-
-    class Meta:
-        fields = ('__all__')
-        model = Review
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    text = serializers.CharField()
-
-    class Meta:
-        fields = ('__all__')
-        model = Comment
-        fields = ('first_name', 'last_name',
-                  'username', 'bio', 'email', 'role')
-
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         exclude = ['id', ]
@@ -85,3 +65,18 @@ class TitleSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Title
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = '__all__'
+        model = Review
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+
+    class Meta:
+        fields = '__all__'
+        model = Comment

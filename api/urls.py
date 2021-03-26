@@ -10,15 +10,23 @@ from .views import CategoryViewSet, GenreViewSet, TitleViewSet, UserViewSet
 
 router_v1 = routers.DefaultRouter()
 router_v1.register('users', UserViewSet)
+
 router_v1.register(
     r'titles/(?P<title_id>\d+)/reviews',
     ReviewViewSet,
     basename='api_reviews'
 )
+
+router_v1.register(
+    r'titles/(?P<title_id>\d+)/reviews/(?P<review_id>\d+)',
+    ReviewViewSet,
+    basename='api_reviews'
+)
+
 router_v1.register(
     r'titles/(?P<title_id>\d+)/reviews/(?P<review_id>\d+)/comments',
     CommentViewSet,
-    basename='comments_api'
+    basename='api_comments'
 )
 
 router_v1.register(
