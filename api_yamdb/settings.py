@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
-    'drfpasswordless',
 ]
 
 MIDDLEWARE = [
@@ -117,14 +116,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20
-}
-
-
-PASSWORDLESS_AUTH = {
-    'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
-    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': 'noreply@example.com',
-    'PASSWORDLESS_AUTH_TOKEN_CREATOR': 'api.jwt_token_generation.get_tokens_for_user',
-    'PASSWORDLESS_AUTH_TOKEN_SERIALIZER': 'api.jwt_token_serializer.JWTTokenResponseSerializer',
 }
 
 

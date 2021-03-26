@@ -1,28 +1,17 @@
 from django.urls import include, path
 from rest_framework import routers
-from rest_framework_simplejwt.views import (TokenObtainPairView,
-                                            TokenRefreshView)
 
-from .views import CategoryViewSet, GenreViewSet, TitleViewSet, UserViewSet
+from .views import (CategoryViewSet, GenreViewSet, TitleViewSet, UserViewSet,
+                    get_confirmation_code, get_token)
 
 router_v1 = routers.DefaultRouter()
 router_v1.register('users', UserViewSet)
-router_v1.register(
-    'categories', CategoryViewSet, basename='categories_api'
-)
-router_v1.register(
-    'genres', GenreViewSet, basename='genres_api'
-)
-router_v1.register(
-    'titles', TitleViewSet, basename='titles_api'
-)
-
+router_v1.register('categories', CategoryViewSet)
+router_v1.register('genres', GenreViewSet)
+router_v1.register('titles', TitleViewSet)
 
 urlpatterns = [
-    path('v1/', include('drfpasswordless.urls')),
+    path('v1/auth/email/', get_confirmation_code),
+    path('v1/auth/token/', get_token),
     path('v1/', include(router_v1.urls)),
-    path('v1/auth/token/', TokenObtainPairView.as_view(),
-         name='token_obtain_pair'),
-    path('v1/token/refresh/', TokenRefreshView.as_view(),
-         name='token_refresh'),
 ]
