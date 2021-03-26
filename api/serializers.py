@@ -3,6 +3,15 @@ from rest_framework import serializers
 from .models import Category, Genre, Title, User
 
 
+class EmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+
+class EmailConfirmationCodeSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    confirmation_code = serializers.CharField(max_length=20, required=True)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
