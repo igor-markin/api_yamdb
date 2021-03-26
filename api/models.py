@@ -140,3 +140,6 @@ class Comment(models.Model):
         related_name='comments',
         verbose_name='комментарий'
     )
+
+    def __str__(self):
+        return self.text
