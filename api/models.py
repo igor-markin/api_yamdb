@@ -103,8 +103,7 @@ class Review(models.Model):
         ordering = ('-pub_date',)
 
     def __str__(self):
-        str_return = str(self.text)
-        return str_return
+        return self.text
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -131,12 +130,6 @@ class Comment(models.Model):
     pub_date = models.DateTimeField(
         'Дата',
         auto_now_add=True
-    )
-    title = models.ForeignKey(
-        Title,
-        on_delete=models.CASCADE,
-        related_name='titles',
-        verbose_name='Произведение'
     )
 
     review = models.ForeignKey(
