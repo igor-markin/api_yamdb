@@ -142,5 +142,8 @@ class Comment(models.Model):
         verbose_name='комментарий'
     )
 
+    class Meta:
+        ordering = ('-pub_date',)
+
     def __str__(self):
         return self.text
