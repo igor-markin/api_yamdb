@@ -35,3 +35,21 @@ class IsAuthorOrModeratorOrReadOnly(permissions.BasePermission):
         return (request.method in MODERATOR_METHODS
                 and request.user.role == Roles.MODERATOR
                 or obj.author == request.user)
+
+
+class ReviewCommentPermissions(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        if request.method == 'POST':
+            return not request.user.is_anonymous()
+
+        if request.method in MODERATOR_METHODS:
+            return (
+                request.user == obj.author
+                or request.user.role == Roles.ADMIN
+                or request.user.role == Roles.MODERATOR
+            )
+
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return False

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Avg
 
 
 class Roles(models.TextChoices):
@@ -69,3 +70,80 @@ class Title(models.Model):
 
     class Meta:
         ordering = ('id',)
+
+
+class Review(models.Model):
+    SCORE_CHOICES = zip(range(1, 11), range(1, 11))
+    score = models.IntegerField(choices=SCORE_CHOICES, default=1)
+    text = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Текст'
+    )
+    pub_date = models.DateTimeField(
+        'Дата отзыва',
+        auto_now_add=True,
+        help_text='Дата отзыва',
+        db_index=True
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        verbose_name='Автор'
+    )
+    title = models.ForeignKey(
+        Title,
+        on_delete=models.CASCADE,
+        related_name='titles',
+        verbose_name='Произведение'
+    )
+
+    class Meta:
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return self.text
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.score_avg = Review.objects.filter(title_id=self.title).aggregate(
+            Avg('score')
+        )
+        self.title.rating = self.score_avg['score__avg']
+        self.title.save()
+
+
+class Comment(models.Model):
+
+    text = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Комментарий'
+    )
+
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Автор'
+    )
+    pub_date = models.DateTimeField(
+        'Дата',
+        auto_now_add=True
+    )
+
+    review = models.ForeignKey(
+        Review,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='comments',
+        verbose_name='комментарий'
+    )
+
+    class Meta:
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return self.text

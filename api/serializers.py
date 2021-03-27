@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, Genre, Title, User
+from .models import Category, Comment, Genre, Review, Title, User
 
 
 class EmailSerializer(serializers.Serializer):
@@ -75,3 +75,36 @@ class TitleSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Title
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    text = serializers.CharField()
+    author = serializers.ReadOnlyField(source='author.username')
+    def validate(self, data):
+
+        request = self.context['request']
+
+        if request.method != 'POST':
+            return data
+
+        user = request.user
+        title_id = (
+            request.parser_context['kwargs']['title_id']
+        )
+        if Review.objects.filter(author=user, title__id=title_id).exists():
+            raise serializers.ValidationError(
+                'Вы уже оставили отзыв на данное произведение')
+        return data
+
+    class Meta:
+        fields = ('id', 'text', 'author', 'score', 'pub_date')
+        model = Review
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    text = serializers.CharField()
+    author = serializers.ReadOnlyField(source='author.username')
+
+    class Meta:
+        fields = ('id', 'text', 'author', 'pub_date')
+        model = Comment
