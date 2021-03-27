@@ -44,9 +44,11 @@ class ReviewCommentPermissions(permissions.BasePermission):
             return not request.user.is_anonymous()
 
         if request.method in MODERATOR_METHODS:
-            return (request.user == obj.author or
-                    request.user.role == Roles.ADMIN or
-                    request.user.role == Roles.MODERATOR)
+            return (
+                request.user == obj.author
+                or request.user.role == Roles.ADMIN
+                or request.user.role == Roles.MODERATOR
+            )
 
         if request.method in permissions.SAFE_METHODS:
             return True
