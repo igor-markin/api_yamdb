@@ -80,8 +80,8 @@ class TitleSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     text = serializers.CharField()
     author = serializers.ReadOnlyField(source='author.username')
-    def validate(self, data):
 
+    def validate(self, data):
         request = self.context['request']
 
         if request.method != 'POST':
