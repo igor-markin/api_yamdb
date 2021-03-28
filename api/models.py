@@ -128,6 +128,7 @@ class Comment(models.Model):
     )
     pub_date = models.DateTimeField(
         'Дата',
+        db_index=True,
         auto_now_add=True
     )
 
