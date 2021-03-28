@@ -90,13 +90,11 @@ class Review(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='reviews',
         verbose_name='Автор'
     )
     title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
-        related_name='titles',
         verbose_name='Произведение'
     )
 
@@ -126,7 +124,6 @@ class Comment(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='comments',
         verbose_name='Автор'
     )
     pub_date = models.DateTimeField(
@@ -139,7 +136,6 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='comments',
         verbose_name='комментарий'
     )
 
