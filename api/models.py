@@ -73,8 +73,9 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    SCORE_CHOICES = zip(range(1, 11), range(1, 11))
-    score = models.IntegerField(choices=SCORE_CHOICES, default=1)
+    score = models.PositiveSmallIntegerField(
+        verbose_name='Оценка', choices=[(r, r) for r in range(1, 11)],
+    )
     text = models.TextField(
         blank=True,
         null=True,
