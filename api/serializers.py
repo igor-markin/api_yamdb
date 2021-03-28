@@ -80,7 +80,7 @@ class TitleSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     text = serializers.CharField()
     author = serializers.ReadOnlyField(source='author.username')
-    
+
     def validate(self, data):
         title_id = self.context.get('view').kwargs.get('title_id')
         author = self.context.get('request').user
