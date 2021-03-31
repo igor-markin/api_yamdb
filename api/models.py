@@ -73,8 +73,9 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    SCORE_CHOICES = zip(range(1, 11), range(1, 11))
-    score = models.IntegerField(choices=SCORE_CHOICES, default=1)
+    score = models.PositiveSmallIntegerField(
+        verbose_name='Оценка', choices=[(r, r) for r in range(1, 11)],
+    )
     text = models.TextField(
         blank=True,
         null=True,
@@ -89,13 +90,11 @@ class Review(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='reviews',
         verbose_name='Автор'
     )
     title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
-        related_name='titles',
         verbose_name='Произведение'
     )
 
@@ -125,11 +124,11 @@ class Comment(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='comments',
         verbose_name='Автор'
     )
     pub_date = models.DateTimeField(
         'Дата',
+        db_index=True,
         auto_now_add=True
     )
 
@@ -138,7 +137,6 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='comments',
         verbose_name='комментарий'
     )
 
