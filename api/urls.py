@@ -3,8 +3,7 @@ from rest_framework import routers
 
 from . import urls_v1_auth
 from .views import (CategoryViewSet, CommentViewSet, GenreViewSet,
-                    ReviewViewSet, TitleViewSet, UserViewSet,
-                    get_confirmation_code, get_token)
+                    ReviewViewSet, TitleViewSet, UserViewSet)
 
 router_v1 = routers.DefaultRouter()
 router_v1.register('users', UserViewSet)

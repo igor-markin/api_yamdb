@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Avg
 
-from api.validators import year_validator, score_validator
+from api.validators import score_validator, year_validator
 
 
 class Roles(models.TextChoices):

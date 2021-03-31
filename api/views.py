@@ -1,7 +1,7 @@
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, permissions, status, viewsets
+from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .filters import TitleFilter
+from .mixins import DestroyListCreateViewSet
 from .models import Category, Comment, Genre, Review, Title, User
 from .permissions import (IsAdminOrAccessDenied, IsAdminOrReadOnly,
                           ReviewCommentPermissions)
@@ -17,13 +18,6 @@ from .serializers import (AdminUserSerializer, CategorySerializer,
                           CommentSerializer, EmailConfirmationCodeSerializer,
                           EmailSerializer, GenreSerializer, ReviewSerializer,
                           TitleSerializer, UserSerializer)
-
-
-class DestroyListCreateViewSet(mixins.DestroyModelMixin,
-                               mixins.ListModelMixin,
-                               mixins.CreateModelMixin,
-                               viewsets.GenericViewSet):
-    pass
 
 
 @api_view(['POST'])
@@ -112,7 +106,6 @@ class TitleViewSet(viewsets.ModelViewSet):
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
-
     serializer_class = ReviewSerializer
     pagination_class = PageNumberPagination
     permission_classes = [ReviewCommentPermissions,
@@ -130,7 +123,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-
     serializer_class = CommentSerializer
     pagination_class = PageNumberPagination
     permission_classes = [ReviewCommentPermissions,
