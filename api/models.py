@@ -29,7 +29,7 @@ class User(AbstractUser):
 
 class Category(models.Model):
     name = models.CharField('Название', max_length=200)
-    slug = models.SlugField('Короткая ссылка', unique=True)
+    slug = models.SlugField('Короткая ссылка', unique=True, db_index=True)
 
     class Meta:
         verbose_name = 'Категория'
@@ -39,7 +39,7 @@ class Category(models.Model):
 
 class Genre(models.Model):
     name = models.CharField('Название', max_length=200)
-    slug = models.SlugField('Короткая ссылка', unique=True)
+    slug = models.SlugField('Короткая ссылка', unique=True, db_index=True)
 
     class Meta:
         verbose_name = 'Жанр'
