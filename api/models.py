@@ -3,6 +3,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Avg
 
+from api.validators import year_validator
+
 
 class Roles(models.TextChoices):
     USER = 'user', 'Пользователь'
@@ -47,7 +49,10 @@ class Genre(models.Model):
 
 class Title(models.Model):
     name = models.CharField('Название', max_length=200)
-    year = models.SmallIntegerField('Год создания')
+    year = models.SmallIntegerField(
+        'Год создания',
+        validators=[year_validator],
+    )
     rating = models.SmallIntegerField(
         'Рейтинг',
         validators=[
