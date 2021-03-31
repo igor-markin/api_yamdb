@@ -7,6 +7,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from api_yamdb.settings import SEND_MAIL_EMAIL
@@ -22,38 +23,41 @@ from .serializers import (AdminUserSerializer, CategorySerializer,
                           TitleSerializer, UserSerializer)
 
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def get_confirmation_code(request):
-    serializer = EmailSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    email = serializer.data['email']
-    user = User.objects.get_or_create(email=email)[0]
-    confirmation_code = default_token_generator.make_token(user)
+class GetConfirmationCodeView(APIView):
+    permission_classes = (AllowAny,)
 
-    send_mail(
-        'Код подтверждения',
-        f'Ваш код подтверждения: {confirmation_code}',
-        SEND_MAIL_EMAIL,
-        ['user@yamdb.com'],
-    )
+    def post(self, request):
+        serializer = EmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.data['email']
+        user = User.objects.get_or_create(email=email)[0]
+        confirmation_code = default_token_generator.make_token(user)
 
-    return Response({'email': email})
+        send_mail(
+            'Код подтверждения',
+            f'Ваш код подтверждения: {confirmation_code}',
+            SEND_MAIL_EMAIL,
+            ['user@yamdb.com'],
+        )
+
+        return Response({'email': email})
 
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def get_token(request):
-    serializer = EmailConfirmationCodeSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    email = serializer.data['email']
-    user = User.objects.get(email=email)
-    confirmation_code = serializer.data['confirmation_code']
-    if not default_token_generator.check_token(user, confirmation_code):
-        return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
-    token = RefreshToken.for_user(user).access_token
+class GetTokenView(APIView):
+    permission_classes = (AllowAny,)
 
-    return Response({'token': token}, status=status.HTTP_200_OK)
+    def post(self, request):
+        serializer = EmailConfirmationCodeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.data['email']
+        user = User.objects.get(email=email)
+        confirmation_code = serializer.data['confirmation_code']
+        if not default_token_generator.check_token(user, confirmation_code):
+            return Response(serializer.errors,
+                            status=status.HTTP_403_FORBIDDEN)
+        token = RefreshToken.for_user(user).access_token
+
+        return Response({'token': token}, status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):

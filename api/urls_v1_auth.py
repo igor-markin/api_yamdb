@@ -1,8 +1,8 @@
 from django.urls import path
 
-from api.views import get_confirmation_code, get_token
+from api.views import GetConfirmationCodeView, GetTokenView
 
 urlpatterns = [
-    path('auth/email/', get_confirmation_code),
-    path('auth/token/', get_token),
+    path('auth/email/', GetConfirmationCodeView.as_view()),
+    path('auth/token/', GetTokenView.as_view()),
 ]
