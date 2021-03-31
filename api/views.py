@@ -9,6 +9,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from api_yamdb.settings import SEND_MAIL_EMAIL
+
 from .filters import TitleFilter
 from .mixins import DestroyListCreateViewSet
 from .models import Category, Comment, Genre, Review, Title, User
@@ -32,7 +34,7 @@ def get_confirmation_code(request):
     send_mail(
         'Код подтверждения',
         f'Ваш код подтверждения: {confirmation_code}',
-        'code@yamdb.com',
+        SEND_MAIL_EMAIL,
         ['user@yamdb.com'],
     )
 
