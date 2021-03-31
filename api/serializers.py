@@ -85,8 +85,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         title_id = self.context.get('view').kwargs.get('title_id')
         author = self.context.get('request').user
         if (self.context.get('request').method == 'POST'
-            and Review.objects.filter(title_id=title_id,
-                                      author_id=author.id).exists()):
+                and Review.objects.filter(title_id=title_id,
+                                          author_id=author.id).exists()):
             raise serializers.ValidationError(
                 'Вы уже оставили отзыв на данное произведение')
         return data

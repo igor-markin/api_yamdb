@@ -1,6 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 
+from . import urls_v1_auth
 from .views import (CategoryViewSet, CommentViewSet, GenreViewSet,
                     ReviewViewSet, TitleViewSet, UserViewSet,
                     get_confirmation_code, get_token)
@@ -22,7 +23,6 @@ router_v1.register(
 )
 
 urlpatterns = [
-    path('v1/auth/email/', get_confirmation_code),
-    path('v1/auth/token/', get_token),
+    path('v1/', include(urls_v1_auth)),
     path('v1/', include(router_v1.urls)),
 ]
