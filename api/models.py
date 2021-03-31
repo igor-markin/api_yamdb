@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Avg
 
-from api.validators import year_validator
+from api.validators import year_validator, score_validator
 
 
 class Roles(models.TextChoices):
@@ -89,6 +89,7 @@ class Review(models.Model):
     score = models.PositiveSmallIntegerField(
         'Оценка',
         choices=[(r, r) for r in range(1, 11)],
+        validators=[score_validator],
     )
     text = models.TextField('Текст', blank=True, null=True)
     pub_date = models.DateTimeField(

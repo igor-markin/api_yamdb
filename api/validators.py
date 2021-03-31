@@ -5,4 +5,11 @@ from django.utils import timezone
 def year_validator(value):
     if value > timezone.now().year:
         params = {'value': value, }
-        raise ValidationError('Год больше текущего', params=params)
+        raise ValidationError('Год не может быть больше текущего',
+                              params=params)
+
+
+def score_validator(value):
+    if value > 10 or value < 1:
+        params = {'value': value, }
+        raise ValidationError('Оценка может быть от 1 до 10', params=params)
