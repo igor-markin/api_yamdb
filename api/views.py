@@ -14,7 +14,7 @@ from api_yamdb.settings import SEND_MAIL_EMAIL
 
 from .filters import TitleFilter
 from .mixins import DestroyListCreateViewSet
-from .models import Category, Comment, Genre, Review, Title, User
+from .models import Category, Genre, Review, Title, User
 from .permissions import (IsAdminOrAccessDenied, IsAdminOrReadOnly,
                           ReviewCommentPermissions)
 from .serializers import (AdminUserSerializer, CategorySerializer,
