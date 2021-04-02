@@ -146,7 +146,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        verbose_name='комментарий'
+        verbose_name='Комментарий'
     )
 
     class Meta:
